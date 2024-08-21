@@ -1,25 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-// const jsxHeader = <h1 id="root">namaste vro</h1>;
-
-
-// const duntion = () => <><h1>react</h1>
-// <h2>reastion</h2></>
-// ;
-
-
-// const fun = () => (
-//     <><duntion />
-//     <h1>composite funtion</h1></>
-
-// )
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(<duntion/>);
-
-const Hello = () => {
-    return <h1>HELLO WORLD</h1>
+const header = () =>{
+    return (
+        <div className="header">
+            <div className="logo-container">
+                <img className="logo" src="https://www.pngitem.com/middle/iJRRoo_delivery-logo-food-delivery-service-hd-png-download/"></img>
+            </div>
+            <div className="nav-items">
+                <ul>
+                    <li>Home</li>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>Cart</li>
+                </ul>
+            </div>
+        </div>
+    );
+};
+const AppLayout = () =>{
+    return <div className="app">
+        <header />
+    </div>;
 }
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<Hello/>);
+root.render(<AppLayout/>);
