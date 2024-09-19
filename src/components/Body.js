@@ -6,6 +6,7 @@ import shimmer from "./Shimmer";
 const Body = () => {
 
     const [ListOfRestaurants, SetListOfRestaurants] = useState(resList);
+    const [filteredRestaurants, SetFilteredRestaurants] = useState([]);
 
     const [searchText, setSearchText] = useState("");
 
@@ -17,7 +18,9 @@ const Body = () => {
     }, []);
 
     const fetchData = async () => {
-        const data = await fetch();  // given by the browser
+        const data = await fetch(
+            "https://analytics.swiggy.com/message-set"
+        );  // given by the browser
 
 
         // data from api
@@ -26,6 +29,7 @@ const Body = () => {
 
         //taking data and updating in hook variables.
         SetListOfRestaurants(json.data.cards[2].data.data.cards);   //state variable
+        SetFilteredRestaurants(json.data.cards[2].data.data.cards);
 
 
         //above not efficient way to write the code....so we do OPTIONAL CHAINING
@@ -53,6 +57,10 @@ const Body = () => {
                                    setSearchText(e.target.value)}}/>
                         <button onClick={() =>{
                             console.log(searchText);
+
+                            const filteredRest = ListOfRestaurants.filter((res) => res.data.name.toLowerCase().includes(searchText.toLowerCase()));
+
+                            SetListOfRestaurants(filteredRest);
                         }}>Search</button>
                     </div>
                 </div>
@@ -63,11 +71,11 @@ const Body = () => {
                     const filteredList=ListOfRestaurants.filter(
                         (res)=>res.data.avgRating>4
                     );
-                    SetListOfRestaurants(filteredList);
+                    SetFilteredRestaurants(filteredList);
                 }}>Top Rated Restaurants</button>
             </div>            
             <div className="rest-container">
-                {ListOfRestaurants.map((restaurant) => (
+                {filteredRestaurants.map((restaurant) => (
                     <RestCard key={restaurant.data.id} resData={restaurant}/>
                 ))}
             </div>
