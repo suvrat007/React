@@ -1,6 +1,6 @@
 import Header from "./Header";
 
-const shimmer = () =>{
+const Shimmer = () =>{
     return (
         <div className="shimmer-container">
             <div className="shimmer-card"></div>
@@ -22,4 +22,4 @@ const shimmer = () =>{
     );
 };
 
-export default shimmer();
+export default Shimmer();

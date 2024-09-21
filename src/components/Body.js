@@ -1,14 +1,15 @@
+import React, {useEffect} from "react";
 import resList from "../utility/MockData";
 import RestCard from "./RestCard";
 import {useEffect, useState} from "react";
-import shimmer from "./Shimmer";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
 
     const [ListOfRestaurants, SetListOfRestaurants] = useState(resList);
     const [filteredRestaurants, SetFilteredRestaurants] = useState([]);
 
-    const [searchText, setSearchText] = useState("");
+
 
 
     // will be called after the component is rendered.
@@ -19,7 +20,7 @@ const Body = () => {
 
     const fetchData = async () => {
         const data = await fetch(
-            "https://analytics.swiggy.com/message-set"
+            "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.73826769999999&lng=77.0822151&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );  // given by the browser
 
 
@@ -28,8 +29,8 @@ const Body = () => {
 
 
         //taking data and updating in hook variables.
-        SetListOfRestaurants(json.data.cards[2].data.data.cards);   //state variable
-        SetFilteredRestaurants(json.data.cards[2].data.data.cards);
+        SetListOfRestaurants(json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);   //state variable
+        SetFilteredRestaurants(json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);
 
 
         //above not efficient way to write the code....so we do OPTIONAL CHAINING
@@ -38,12 +39,13 @@ const Body = () => {
 
 
     // when the api is not fetched but the code is rendered display a loading screen ---- CONDITIONAL RENDERING
-    if(ListOfRestaurants.length === 0){
-        return <h1>Loading.......</h1>;
-    };
+    // if(ListOfRestaurants.length === 0){
+    //     return <h1>Loading.......</h1>;
+    // };
     //instead of showing loader....show fake page (called SHIMMER UI)
 
 
+    const [searchText, setSearchText] = useState("");
 
     // whenever state variable changes....starts RECONCILLIATION CYCLE
     return ListOfRestaurants.length===0 ? (<Shimmer />) :
@@ -51,35 +53,32 @@ const Body = () => {
                 <div className="filter">
                     <div className="search">
                         <input type="text"
-                               className={search-box}
+                               className="search-box"
                                value={searchText}
                                onChange={(e) => {
                                    setSearchText(e.target.value)}}/>
                         <button onClick={() =>{
                             console.log(searchText);
-
-                            const filteredRest = ListOfRestaurants.filter((res) => res.data.name.toLowerCase().includes(searchText.toLowerCase()));
-
-                            SetListOfRestaurants(filteredRest);
+                            const filteredRest = ListOfRestaurants.filter((res) => res.info.name.toLowerCase().includes(searchText.toLowerCase()));
+                            SetFilteredRestaurants(filteredRest);
                         }}>Search</button>
                     </div>
                 </div>
             <div className="search-container">
-                <button 
-                className="filter-btn"
-                onClick={()=>{
+                <button className="filter-btn" onClick={()=>{
                     const filteredList=ListOfRestaurants.filter(
-                        (res)=>res.data.avgRating>4
+                        (res)=>res.info.avgRating>4.2
                     );
                     SetFilteredRestaurants(filteredList);
                 }}>Top Rated Restaurants</button>
-            </div>            
+            </div>
             <div className="rest-container">
                 {filteredRestaurants.map((restaurant) => (
-                    <RestCard key={restaurant.data.id} resData={restaurant}/>
-                ))}
+                    <RestCard key={restaurant.info.id} resData={restaurant}/>
+                ))
+                }
             </div>
         </div>
-    );
-};
+    )
+}
 export default Body;
