@@ -48,7 +48,7 @@ const Body = () => {
     const [searchText, setSearchText] = useState("");
 
     // whenever state variable changes....starts RECONCILLIATION CYCLE
-    return ListOfRestaurants.length===0 ? (<Shimmer />) :
+    return ListOfRestaurants.length===0 ? <Shimmer /> :
         (<div className="body">
                 <div className="filter">
                     <div className="search">

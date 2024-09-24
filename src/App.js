@@ -6,6 +6,7 @@ import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
+import RestaurantMenu from "./components/RestaurantMenu";
 // * not using keys (not acceptable) <<<< index as a key <<<<<<<<<< unique id (is the best  practice)
 
 
@@ -33,6 +34,10 @@ const appRouter = createBrowserRouter([
             {
                 path: "/contact",
                 element:<Contact />
+            },
+            {
+                path: "/restaurant/:resId", //colon (:) makes it dynamic
+                element: <RestaurantMenu />
             }
         ],
         errorElement: <Error />,
