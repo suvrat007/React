@@ -1,4 +1,4 @@
-import React from "react";
+import React, {lazy Suspense} from "react";
 import ReactDOM from "react-dom";
 import Body from "./components/Body";
 import Header from "./components/Header";
@@ -7,8 +7,16 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
+// import Grocery from "./components/Grocery";
 // * not using keys (not acceptable) <<<< index as a key <<<<<<<<<< unique id (is the best  practice)
 
+
+
+// lazy loading or On demand loading
+// it imports grocery on demannd makin stufff faster
+const Grocery = () =>{
+    import("./components/Grocery");
+}
 
 
 const AppLayout = () =>{
@@ -34,6 +42,10 @@ const appRouter = createBrowserRouter([
             {
                 path: "/contact",
                 element:<Contact />
+            },
+            {
+                path: "/grocery",
+                element:<Suspense fallback={<h1> LOADING ... .. .</h1>}><Grocery /> </Suspense>,
             },
             {
                 path: "/restaurant/:resId", //colon (:) makes it dynamic

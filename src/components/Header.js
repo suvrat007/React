@@ -1,6 +1,7 @@
 import { LOGO_URL } from "../utility/constants";
 import {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
+import useOnlineStatus from "../utility/useOnlineStatus";
 
 const Header = () =>{
     const [btnNameReact, setBtnNameReact] = useState("LogIn");
@@ -13,6 +14,7 @@ const Header = () =>{
         console.log("header called");
     }, []);
     // let BtnName = "Log In";
+    const onlineStatus = useOnlineStatus();
     return (
         <div className="header">
             <div className="logo-container">
@@ -20,14 +22,16 @@ const Header = () =>{
             </div>
             <div className="nav-items">
                 <ul>
+                    <li>Online Status : {onlineStatus ? "U+2705" : "U+1F534"}</li>
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About Us</Link></li>
                     <li><Link to="/contact">Contact Us</Link></li>
+                    <li><Link to="/grocery">Grocery</Link></li>
                     <li>Cart</li>
 
 
                     <button className="login" onClick={() => {
-                        btnNameReact==="LogIn" ? setBtnNameReact("LogOut") : setBtnNameReact("LogIn");
+                        btnNameReact === "LogIn" ? setBtnNameReact("LogOut") : setBtnNameReact("LogIn");
                     }}>{btnNameReact}</button>
 
                 </ul>

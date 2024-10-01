@@ -4,6 +4,7 @@ import RestCard from "./RestCard";
 import {useEffect, useState} from "react";
 import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom";
+import useOnlineStatus from "../utility/useOnlineStatus";
 
 const Body = () => {
 
@@ -47,6 +48,16 @@ const Body = () => {
 
 
     const [searchText, setSearchText] = useState("");
+
+    const onlineStatus = useOnlineStatus();
+
+    if(onlineStatus === false) {
+        return (
+            <h1>
+                "LOOKS LIKE UR OFFLINE....CHECK UR NET"
+            </h1>
+        )
+    }
 
     // whenever state variable changes....starts RECONCILLIATION CYCLE
     return ListOfRestaurants.length===0 ? <Shimmer /> :
