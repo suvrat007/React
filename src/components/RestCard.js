@@ -16,13 +16,13 @@ const RestCard= (props) => {
       } = resData?.info;
 
     return (
-        <div className="res-card" style={cardStyle}>
-            <img className="res-logo" 
+        <div className="m-4 p-4 w-[250px] rounded-lg hover:bg-gray-400 bg-gray-100" >
+            <img className="rounded-lg"
             // src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_264,h_288,c_fill/6aa38b251b1ee1662961a6dc19e41e95"
             src={CDN_URL + cloudinaryImageId}>
 
             </img>
-            <h3>{name}</h3>
+            <h3 className="font-bold py-4 text-xl ">{name}</h3>
             <h4>{cuisines.join(", ")}</h4>
             <h4>{avgRating}</h4>
             <h4>Rs.{costForTwo/100} FOR TWO</h4>

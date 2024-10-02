@@ -1,4 +1,4 @@
-import React, {lazy Suspense} from "react";
+import React, {lazy ,Suspense} from "react";
 import ReactDOM from "react-dom";
 import Body from "./components/Body";
 import Header from "./components/Header";
