@@ -16,10 +16,10 @@ class UserClass extends React.Component {
     }
     async componentDidMount(){
         const data = await fetch("https://api.github.com/user");
-        const json : await data.json();
+        const json = await data.json();
 
         this.setState({
-            userInfo = json;
+            userInfo : json,
         });
 
         console.log(json);
@@ -56,7 +56,7 @@ class UserClass extends React.Component {
     // second - componentDidMount was called....api call was made.....setState called and updation happens
     //         ....once again render trigger.....bcoz state variable changed.....so variable values aslo updated
 
-    }
+
 }
 
 export default UserClass;
