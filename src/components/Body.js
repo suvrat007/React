@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import resList from "../utility/MockData";
 import RestCard from "./RestCard";
 import {useEffect, useState} from "react";
@@ -8,10 +8,14 @@ import useOnlineStatus from "../utility/useOnlineStatus";
 
 const Body = () => {
 
-    const [ListOfRestaurants, SetListOfRestaurants] = useState(resList);
+    const [ListOfRestaurants, SetListOfRestaurants] = useState([]);
     const [filteredRestaurants, SetFilteredRestaurants] = useState([]);
+    const [searchText, setSearchText] = useState("");
+
+    const onlineStatus = useOnlineStatus();
 
 
+    console.log("Body Rendered", ListOfRestaurants);
 
 
     // will be called after the component is rendered.
@@ -21,35 +25,31 @@ const Body = () => {
     }, []);
 
     const fetchData = async () => {
-        const data = await fetch(
-            "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.73826769999999&lng=77.0822151&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-        );  // given by the browser
+        console.log('fetch called');
+        //optional chaining for more effective code
 
+        //this code  is not working correctly now
+        try {
+            const data = await fetch('https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.73826769999999&lng=77.0822151&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING');
+            const json = await data.json();
+            console.log("Fetched data", json);
 
-        // data from api
-        const json = await data.json();
+            //taking data and updating in hook variables.
+            SetListOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+            SetFilteredRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
 
-
-        //taking data and updating in hook variables.
-        SetListOfRestaurants(json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);   //state variable
-        SetFilteredRestaurants(json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);
-
-
-        //above not efficient way to write the code....so we do OPTIONAL CHAINING
-    };
+    }
     // page is first loaded, then code is rendered, then 'useEffect is called' ie API call is made and site is rerendered.
 
 
     // when the api is not fetched but the code is rendered display a loading screen ---- CONDITIONAL RENDERING
-    // if(ListOfRestaurants.length === 0){
-    //     return <h1>Loading.......</h1>;
-    // };
+    if(ListOfRestaurants.length === 0){
+        return <h1>Loading.......</h1>
+    }
     //instead of showing loader....show fake page (called SHIMMER UI)
-
-
-    const [searchText, setSearchText] = useState("");
-
-    const onlineStatus = useOnlineStatus();
 
     if(onlineStatus === false) {
         return (
@@ -60,6 +60,7 @@ const Body = () => {
     }
 
     // whenever state variable changes....starts RECONCILLIATION CYCLE
+
     return ListOfRestaurants.length===0 ? <Shimmer /> :
         (<div className="body">
                 <div className="filter">
@@ -89,6 +90,9 @@ const Body = () => {
                     <Link
                         key={restaurant.info.id}
                         to={"/restaurant/"+restaurant.info.id}>
+
+
+                    {/*    if a restaurant is promoted then add promoted tag to it*/}
                     <RestCard  resData={restaurant}/>
                     </Link>
                 ))}

@@ -3,7 +3,11 @@ import UserClass from "./UserClass";
 import {Component} from "react";
 
 
+console.log("about is called");
+
+
 class About extends Component {
+
     constructor(props) {
         super(props);
     }
@@ -39,6 +43,7 @@ class About extends Component {
             </div>
         )
     }
+
 }
 
 

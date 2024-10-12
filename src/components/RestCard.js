@@ -1,4 +1,4 @@
-    import { CDN_URL } from "../utility/constants";
+import { CDN_URL } from "../utility/constants";
 
 const cardStyle = {
     backgroundColor: "#f0f0f0", 
@@ -12,7 +12,7 @@ const RestCard= (props) => {
         cuisines,
         avgRating,
         costForTwo,
-        deliveryTime,
+        sla: { deliveryTime } ,
       } = resData?.info;
 
     return (
@@ -25,9 +25,22 @@ const RestCard= (props) => {
             <h3 className="font-bold py-4 text-xl ">{name}</h3>
             <h4>{cuisines.join(", ")}</h4>
             <h4>{avgRating}</h4>
-            <h4>Rs.{costForTwo/100} FOR TWO</h4>
+            <h4>Rs.{costForTwo} </h4>
             <h4>{deliveryTime} minutes</h4>
         </div>
     )
-}
+};
+
+// Higher Order Component
+//     -takes component as input and returns and enhanced component as an output
+    const withPromotedLabel =(RestaurantCard) => {
+        return () =>{
+            return (
+                <div>
+                    <label>Promoted</label>
+                    <RestaurantCard />
+                </div>
+            );
+        };
+    };
 export default RestCard;

@@ -1,62 +1,64 @@
 import React from "react";
 
+console.log("UserClass called");
+
 class UserClass extends React.Component {
+
     constructor(props) {
         super(props);
+        console.log("props called");
 
-        // made a useState inside class based component
+        // initializing state in class component
         this.state = {
-            userInfo:{
+            userInfo: {
                 name: "Dummy",
-                location:"random"
+                location: "random",
+                avatar_url: ""
             }
         };
-
-
     }
+
     async componentDidMount(){
-        const data = await fetch("https://api.github.com/user");
+        // correct API endpoint to fetch a user's data from GitHub
+        const data = await fetch("https://api.github.com/users/suvrat007");
         const json = await data.json();
 
+        // updating state with the fetched data
         this.setState({
-            userInfo : json,
+            userInfo: json,
         });
 
         console.log(json);
     }
 
     componentDidUpdate() {
-        // called at last
+        // called after every update
         console.log("UserClass Updated");
     }
 
     componentWillUnmount() {
         // just before component will unmount
         console.log("UserClass Unmounted");
-        // unmounting happens when the page changes
     }
 
     render(){
-        const {name,location, avatar_url} = this.props;
+        const { name, location, avatar_url } = this.state.userInfo;
 
         return (
             <div className="user-card">
-                <img> {avatar_url}</img>
-                <h2>Name: {this.props.name}</h2>
-                <h3>Location: {this.props.location}</h3>
-                <h4>Email: dilli@gmail.com</h4>`
+                <img src={avatar_url} alt={name} />
+                <h2>Name: {name}</h2>
+                <h3>Location: {location}</h3>
+                <h4>Email: dilli@gmail.com</h4>
             </div>
         );
     }
 
-//     life cycle---
-
-    // first - constructor called and state variable create
-    // RENDER CALLED---dummy data comes up.....then rerendering happens
-    // second - componentDidMount was called....api call was made.....setState called and updation happens
-    //         ....once again render trigger.....bcoz state variable changed.....so variable values aslo updated
-
-
+    // Life cycle explanation:
+    // First - constructor is called, state variable is initialized.
+    // Second - render is called, dummy data is displayed.
+    // Third - componentDidMount is called, API call is made, and state is updated.
+    // Fourth - render is called again with updated data.
 }
 
 export default UserClass;

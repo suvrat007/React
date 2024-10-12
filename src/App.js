@@ -7,6 +7,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
+
 // import Grocery from "./components/Grocery";
 // * not using keys (not acceptable) <<<< index as a key <<<<<<<<<< unique id (is the best  practice)
 
@@ -18,6 +19,7 @@ const Grocery = () =>{
     import("./components/Grocery");
 }
 
+console.log("aara hai ki nahi")
 
 const AppLayout = () =>{
     return( <div className="app">
