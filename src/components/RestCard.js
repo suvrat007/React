@@ -33,12 +33,12 @@ const RestCard= (props) => {
 
 // Higher Order Component
 //     -takes component as input and returns and enhanced component as an output
-    const withPromotedLabel =(RestaurantCard) => {
-        return () =>{
+    export const withPromotedLabel =(RestaurantCard) => {
+        return (props) =>{
             return (
                 <div>
-                    <label>Promoted</label>
-                    <RestaurantCard />
+                    <label className="absolute bg-black text-white m-2 p-2 rounded-lg">Promoted</label>
+                    <RestaurantCard {...props}/>
                 </div>
             );
         };

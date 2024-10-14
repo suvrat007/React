@@ -1,6 +1,6 @@
 import React from "react";
 import resList from "../utility/MockData";
-import RestCard from "./RestCard";
+import RestCard, {withPromotedLabel} from "./RestCard";
 import {useEffect, useState} from "react";
 import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom";
@@ -14,6 +14,7 @@ const Body = () => {
 
     const onlineStatus = useOnlineStatus();
 
+    const RestaurantCardPromoted = withPromotedLabel(RestCard);
 
     console.log("Body Rendered", ListOfRestaurants);
 
@@ -93,7 +94,10 @@ const Body = () => {
 
 
                     {/*    if a restaurant is promoted then add promoted tag to it*/}
-                    <RestCard  resData={restaurant}/>
+                        {restaurant.info.promoted ? (
+                            <RestaurantCardPromoted resData={restaurant} /> ):( <RestCard resData={restaurant} />
+                        )}
+
                     </Link>
                 ))}
             </div>

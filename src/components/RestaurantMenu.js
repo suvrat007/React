@@ -3,32 +3,54 @@ import Shimmer from "./Shimmer";
 import {useParams} from "react-router-dom";
 import {MENU_API} from "../utility/constants";
 import useRestaurantMenu from "../utility/useRestaurantMenu";
+import RestaurantCategory from "./RestaurantCategory";
+
 
 const RestaurantMenu=()=>{
-    const [restInfo ,setRestInfo] = useState([]);
+    const {resId}=useParams();//it returns the object with the id, here we are destructuring it
+    const [showIndex,setShowIndex]=useState(null);
 
-    const {resId} = useParams();
-    // console.log(params);
-    setRestInfo( useRestaurantMenu(resId));
+    // console.log(resId)
+    const resInfo=useRestaurantMenu(resId);//custom react hook
+    // console.log(resInfo)
+    // console.log(resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card)
+    const categorys = resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter((c)=>(c.card?.card?.["@type"]==="type.googleapis.com/swiggy.presentation.food.v2.ItemCategory") )
+    // console.log(categorys)
 
-    if (restInfo===null) return <Shimmer />;
 
-    const{ name,costForTwoMessage,cuisines}=restInfo.cards[2].card.card.info;
 
-    const{itemCards}=restInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
+    if(resInfo===null) {
+        return (
+            <div>loading.....</div>
+        )
+    }
 
+    console.log(resInfo?.cards[2]?.card?.card?.info)
+    const{name,costForTwoMessage,cuisines,cloudinaryImageId}=resInfo?.cards[2]?.card?.card?.info
     return(
-        <div className="menu">
-            <h1>{name}</h1>
-            <p>{costForTwoMessage}</p>
-            <h3>{cuisines.join(", ")}</h3>
-            <h2>Menu</h2>
-            <ul>
-                {itemCards.map((items) => (
-                    <li key={info.card.info.id}> {items.card.info.name} - {items.card.info.price / 100 || items.card.info.defaultPrice / 100}</li>
-                ))}
+        <div className=" relative flex flex-col items-center justify-center">
+            <div className="relative flex flex-col items-center justify-center bg-gray-700 p-8 my-8 w-6/12 rounded-lg">
 
-            </ul>
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-50 rounded-lg"
+                    // style={{backgroundImage: `url(${CDN_URL + cloudinaryImageId})`}}
+                ></div>
+
+                {/* Content Div */}
+                <div className="relative z-10 text-center">
+                    <h1 className="text-4xl text-white my-4 font-medium">{name}</h1>
+                    <p className="text-lg text-white">
+                        {costForTwoMessage}. {cuisines.join(", ")}.
+                    </p>
+                </div>
+            </div>
+
+
+            {categorys.map((category, index) => (
+                <RestaurantCategory key={category?.card?.card?.name} data={category?.card?.card}
+                             showItems={index === showIndex && true}
+                             setShowIndex={() => setShowIndex(index)}/>
+            ))}
         </div>
     )
 };
