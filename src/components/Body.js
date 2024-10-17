@@ -1,10 +1,11 @@
 import React from "react";
-import resList from "../utility/MockData";
+// import resList from "../utility/MockData";
 import RestCard, {withPromotedLabel} from "./RestCard";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom";
 import useOnlineStatus from "../utility/useOnlineStatus";
+import UserContext from "../utility/UserContext";
 
 const Body = () => {
 
@@ -62,28 +63,43 @@ const Body = () => {
 
     // whenever state variable changes....starts RECONCILLIATION CYCLE
 
+
+    const {loggedInUser,setUserName} = useContext(UserContext);   //data comming from usercontext.provider
     return ListOfRestaurants.length===0 ? <Shimmer /> :
         (<div className="body">
                 <div className="filter">
                     <div className="search m-4 p-4">
+                        <label>Search Restaurant : </label>
                         <input type="text"
-                               className="border border-solid border-black rounded-lg"
+                               className="border border-solid border-black rounded-lg p-1"
                                value={searchText}
                                onChange={(e) => {
-                                   setSearchText(e.target.value)}}/>
-                        <button className="bg-green-400 px-4 m-4 py-2" onClick={() =>{
-                            console.log(searchText);
+                                   setSearchText(e.target.value)
+                               }}/>
+
+                        <button className="bg-green-400 px-4 m-4 py-2" onClick={() => {
+                            // console.log(searchText);
                             const filteredRest = ListOfRestaurants.filter((res) => res.info.name.toLowerCase().includes(searchText.toLowerCase()));
                             SetFilteredRestaurants(filteredRest);
-                        }}>Search</button>
+                        }}>Search
+                        </button>
+
+                        <label className>UserName : </label>
+                        <input type="text"
+                               className="border border-solid border-black rounded-lg p-1"
+                               value={loggedInUser}
+                               onChange={(e) => {
+                                   setUserName(e.target.value)
+                               }}/>
                     </div>
+
                 </div>
-            <div className="search m-4 p-4 flex items-center rounded-lg">
-                <button className="px-4 py-2 bg-gray-400" onClick={()=>{
-                    const filteredList=ListOfRestaurants.filter(
-                        (res)=>res.info.avgRating>4.2
-                    );
-                    SetFilteredRestaurants(filteredList);
+                <div className="search m-4 p-4 flex items-center rounded-lg">
+                    <button className="px-4 py-2 bg-gray-400" onClick={() => {
+                        const filteredList = ListOfRestaurants.filter(
+                            (res) => res.info.avgRating > 4.2
+                        );
+                        SetFilteredRestaurants(filteredList);
                 }}>Top Rated Restaurants</button>
             </div>
             <div className="flex flex-wrap ">

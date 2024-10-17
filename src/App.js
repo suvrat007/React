@@ -1,4 +1,4 @@
-import React, {lazy ,Suspense} from "react";
+import React, {lazy, Suspense, useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import Body from "./components/Body";
 import Header from "./components/Header";
@@ -7,6 +7,8 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
+// import UserMenu from "./components/UserMenu";
+import UserContext from "./utility/UserContext";
 
 // import Grocery from "./components/Grocery";
 // * not using keys (not acceptable) <<<< index as a key <<<<<<<<<< unique id (is the best  practice)
@@ -22,10 +24,22 @@ const Grocery = () =>{
 console.log("aara hai ki nahi")
 
 const AppLayout = () =>{
-    return( <div className="app">
-        <Header />
-        <Outlet />
-    </div>);
+    const[userName , setUserName] = useState();
+
+    useEffect(()=>{
+        const data = {
+            name: "Suvrat Mittal"
+        }
+        setUserName(data.name);
+    },[])
+    return(
+        <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
+            <div className="app">
+                <Header />
+                <Outlet />
+            </div>);
+        </UserContext.Provider>
+    )
 };
 
 const appRouter = createBrowserRouter([

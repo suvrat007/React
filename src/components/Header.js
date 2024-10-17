@@ -1,10 +1,12 @@
 import { LOGO_URL } from "../utility/constants";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import {Link} from "react-router-dom";
 import useOnlineStatus from "../utility/useOnlineStatus";
+import UserContext from "../utility/UserContext";
 
 const Header = () =>{
     const [btnNameReact, setBtnNameReact] = useState("LogIn");
+    const {loggedInUser} = useContext(UserContext)
     console.log("header called");
 
     // useEffect is called everytime after header is rendered
@@ -33,6 +35,8 @@ const Header = () =>{
                     <button className="login" onClick={() => {
                         btnNameReact === "LogIn" ? setBtnNameReact("LogOut") : setBtnNameReact("LogIn");
                     }}>{btnNameReact}</button>
+
+                    <li className="px-4 font-bold">{loggedInUser}</li>
 
                 </ul>
             </div>
