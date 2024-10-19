@@ -9,6 +9,9 @@ import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
 // import UserMenu from "./components/UserMenu";
 import UserContext from "./utility/UserContext";
+import {Provider} from "react-redux";
+import appStore from "./utility/appStore";
+import Cart from "./components/Cart";
 
 // import Grocery from "./components/Grocery";
 // * not using keys (not acceptable) <<<< index as a key <<<<<<<<<< unique id (is the best  practice)
@@ -33,12 +36,14 @@ const AppLayout = () =>{
         setUserName(data.name);
     },[])
     return(
-        <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
-            <div className="app">
-                <Header />
-                <Outlet />
-            </div>);
-        </UserContext.Provider>
+        <Provider store={appStore}>
+            <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
+                <div className="app">
+                    <Header />
+                    <Outlet />
+                </div>);
+            </UserContext.Provider>
+        </Provider>
     )
 };
 
@@ -66,6 +71,10 @@ const appRouter = createBrowserRouter([
             {
                 path: "/restaurant/:resId", //colon (:) makes it dynamic
                 element: <RestaurantMenu />
+            },
+            {
+                path: "/cart",
+                element: <Cart/>,
             }
         ],
         errorElement: <Error />,

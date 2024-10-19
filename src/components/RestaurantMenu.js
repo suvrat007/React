@@ -29,7 +29,7 @@ const RestaurantMenu=()=>{
     const{name,costForTwoMessage,cuisines,cloudinaryImageId}=resInfo?.cards[2]?.card?.card?.info
     return(
         <div className=" relative flex flex-col items-center justify-center">
-            <div className="relative flex flex-col items-center justify-center bg-gray-700 p-8 my-8 w-6/12 rounded-lg">
+            <div className="relative flex flex-col items-center justify-center bg-gray-700 p-8 my-8 w-1/2 rounded-lg">
 
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-50 rounded-lg"

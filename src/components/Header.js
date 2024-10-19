@@ -3,12 +3,17 @@ import {useState, useEffect, useContext} from "react";
 import {Link} from "react-router-dom";
 import useOnlineStatus from "../utility/useOnlineStatus";
 import UserContext from "../utility/UserContext";
+import {useSelector} from "react-redux";
 
 const Header = () =>{
     const [btnNameReact, setBtnNameReact] = useState("LogIn");
     const {loggedInUser} = useContext(UserContext)
     console.log("header called");
 
+    //using selector ....that is a hook
+    // subscribe to the store using Selector
+    const cartItems = useSelector((store) => store.cart.items);
+    console.log("cartItems called" , cartItems);
     // useEffect is called everytime after header is rendered
     // if depedency array is empty = [] => useEffects is only called once
     // something is there in dependecy.. its only called when dependecy changes
@@ -29,7 +34,9 @@ const Header = () =>{
                     <li className="px-4"><Link to="/about">About Us</Link></li>
                     <li className="px-4"><Link to="/contact">Contact Us</Link></li>
                     <li className="px-4"><Link to="/grocery">Grocery</Link></li>
-                    <li className="px-4">Cart</li>
+                    <li className="px-4 font-bold" >
+                        <Link to="/cart">Cart ({cartItems.length}) </Link>
+                    </li>
 
 
                     <button className="login" onClick={() => {
