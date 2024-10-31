@@ -71,6 +71,7 @@ const Body = () => {
                     <div className="search m-4 p-4">
                         <label>Search Restaurant : </label>
                         <input type="text"
+                               data-testid="search-input"
                                className="border border-solid border-black rounded-lg p-1"
                                value={searchText}
                                onChange={(e) => {
@@ -110,7 +111,7 @@ const Body = () => {
 
 
                     {/*    if a restaurant is promoted then add promoted tag to it*/}
-                        {restaurant.info.promoted ? (
+                        {restaurant?.info?.promoted ? (
                             <RestaurantCardPromoted resData={restaurant} /> ):( <RestCard resData={restaurant} />
                         )}
 
